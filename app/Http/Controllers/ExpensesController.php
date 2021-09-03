@@ -19,6 +19,7 @@ class ExpensesController extends Controller
                     ->join('users as u','e.user_id','=','u.id')
                     ->join('expense_category as c','e.category_id','=','c.id')
                     ->select(
+                                'e.id',
                                 \DB::raw("CONCAT(u.fname,' ',u.lname) as name"),
                                 'c.name as category',
                                 'e.amount',
