@@ -14,7 +14,19 @@ class ExpensesController extends Controller
      */
     public function index()
     {
-        return Expenses::all();
+
+        $Data = \DB::table('expenses as e')
+                    ->join('users as u','e.user_id','=','u.id')
+                    ->join('expense_category as c','e.category_id','=','c.id')
+                    ->select(
+                                \DB::raw("CONCAT(u.fname,' ',u.lname) as name"),
+                                'c.name as category',
+                                'e.amount',
+                                'e.date_entry'
+                            )
+                    ->get();
+
+        return $Data;
     }
 
     /**

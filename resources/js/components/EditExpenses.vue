@@ -1,36 +1,30 @@
 <template>
     <div>
-        <h3 class="text-center">Edit User</h3>
+        <h3 class="text-center">Edit Expenses</h3>
         <div class="row">
             <div class="col-md-6">
             
-                <form @submit.prevent="updateUser">
+                <form @submit.prevent="updateExpenses">
                     <div class="form-group">
-                        <label>Username</label>
-                        <input type="text" class="form-control" v-model="myuser.username">
-                    </div>
-                    <div class="form-group">
-                        <label>First Name</label>
-                        <input type="text" class="form-control" v-model="myuser.fname">
-                    </div>
-                    <div class="form-group">
-                        <label>Last Name</label>
-                        <input type="text" class="form-control" v-model="myuser.lname">
-                    </div>
-                    <div class="form-group">
-                        <label>Email Address</label>
-                        <input type="text" class="form-control" v-model="myuser.email">
-                    </div>
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" class="form-control" v-model="myuser.password">
-                    </div>
-                    <div class="form-group">
-                        <label>Role</label>
-                        <select class="form-control" v-model="myuser.role_id">
-                            <option v-for="role in roles" :key="role.id" :value="role.id">{{ role.name }}</option>
+                        <label>Name</label>
+                        <select class="form-control" v-model="myexpense.user_id">
+                            <option v-for="user in users" :key="user.id" :value="user.id" >{{ user.fname }} {{ user.lname }}</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select class="form-control" v-model="myexpense.category_id">
+                            <option v-for="cats in category" :key="cats.id" :value="cats.id">{{ cats.name }}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Amount</label>
+                        <input type="text" class="form-control" v-model="myexpense.amount">
+                    </div>
+                    <div class="form-group">
+                        <label>Date Entry</label>
+                        <input type="date" class="form-control" v-model="myexpense.date_entry">
+                    </div> 
                     <button type="submit" class="btn btn-primary">Update</button>
                 </form>
             </div>
@@ -42,28 +36,34 @@
     export default {
         data() {
             return {
-                myuser: {},
-                roles: {}
+                myexpense: {},
+                users: {},
+                category: {}
             }
         },
         created() {
             this.axios
-                .get(`/api/user-management/user/${this.$route.params.id}`)
+                .get(`/api/expense-management/expenses/${this.$route.params.id}`)
                 .then((res) => {
-                    this.myuser = res.data;
+                    this.myexpense = res.data;
                 });
             this.axios
-                .get('/api/user-management/role')
-                .then((res) => {
-                    this.roles = res.data;
+                .get('/api/expense-management/category/')
+                .then(response => {
+                    this.category = response.data;
+                });
+            this.axios
+                .get('/api/user-management/user/')
+                .then(response => {
+                    this.users = response.data;
                 });
         },
         methods: {
-            updateUser() {
+            updateExpenses() {
                 this.axios
-                    .patch(`/api/user-management/user/${this.$route.params.id}`, this.myuser)
+                    .patch(`/api/user-management/user/${this.$route.params.id}`, this.myexpense)
                     .then((res) => {
-                        this.$router.push({ name: 'user' });
+                        this.$router.push({ name: 'expenses' });
                     }).catch(error => {
                         if (error.response.status == 422){
                             

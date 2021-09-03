@@ -10,6 +10,10 @@ import EditRole from './components/EditRole.vue';
 import Category from './components/Category.vue';
 import CreateCategory from './components/CreateCategory.vue';
 import EditCategory from './components/EditCategory.vue';
+//Expenses
+import Expenses from './components/Expenses.vue';
+import CreateExpenses from './components/CreateExpenses.vue';
+import EditExpenses from './components/EditExpenses.vue';
  
 export const routes = [
     {
@@ -62,5 +66,22 @@ export const routes = [
         name: 'edit-category',
         path: '/expense-management/category/edit/:id',
         component: EditCategory
+    },
+
+    // EXPENSES
+    {
+        name: 'expenses',
+        path: '/expense-management/expenses',
+        component: Expenses
+    },
+    {
+        name: 'create-expenses',
+        path: '/expense-management/expenses/create',
+        component: CreateExpenses
+    },    
+    {
+        name: 'edit-expenses',
+        path: '/expense-management/expenses/edit/:id',
+        component: EditExpenses
     }
 ];

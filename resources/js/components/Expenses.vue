@@ -15,16 +15,16 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="users in user" :key="users.id">
-                <td>{{ users.id }}</td>
-                <td>{{ users.name }}</td>
-                <td>{{ users.category }}</td>
-                <td>{{ users.amount }}</td>
-                <td>{{ users.date_entry }}</td>
+            <tr v-for="expense in expenses" :key="expense.id">
+                <td>{{ expense.id }}</td>
+                <td>{{ expense.name }}</td>
+                <td>{{ expense.category }}</td>
+                <td>{{ expense.amount }}</td>
+                <td>{{ expense.date_entry }}</td>
                 <td>
                     <div class="btn-group" role="group">
-                        <router-link :to="{name: 'edit-user', params: { id: users.id }}" class="btn btn-success">Edit</router-link>
-                        <button class="btn btn-danger" @click="deleteUser(users.id)">Delete</button>
+                        <router-link :to="{name: 'edit-expenses', params: { id: expense.id }}" class="btn btn-success">Edit</router-link>
+                        <button class="btn btn-danger" @click="deleteExpenses(expense.id)">Delete</button>
                     </div>
                 </td>
             </tr>
@@ -37,23 +37,23 @@
     export default {
         data() {
             return {
-                user: []
+                expenses: []
             }
         },
         created() {
             this.axios
-                .get('/api/user-management/user/')
+                .get('/api/expense-management/expenses/')
                 .then(response => {
-                    this.user = response.data;
+                    this.expenses = response.data;
                 });
         },
         methods: {
-            deleteUser(id) { 
+            deleteExpenses(id) { 
                 this.axios
-                    .delete(`/api/user-management/user/${id}`)
+                    .delete(`/api/expense-management/expenses/${id}`)
                     .then(response => {
-                        let i = this.user.map(data => data.id).indexOf(id);
-                        this.user.splice(i, 1)
+                        let i = this.expenses.map(data => data.id).indexOf(id);
+                        this.expenses.splice(i, 1)
                     });
             }
         }

@@ -1,35 +1,29 @@
 <template>
     <div>
-        <h3 class="text-center">Create User</h3>
+        <h3 class="text-center">Create Expenses</h3>
         <div class="row">
             <div class="col-md-6">
-                <form @submit.prevent="addUser">
+                <form @submit.prevent="addExpenses">
                     <div class="form-group">
-                        <label>Username</label>
-                        <input type="text" class="form-control" v-model="myuser.username">
-                    </div>
-                    <div class="form-group">
-                        <label>First Name</label>
-                        <input type="text" class="form-control" v-model="myuser.fname">
-                    </div>
-                    <div class="form-group">
-                        <label>Last Name</label>
-                        <input type="text" class="form-control" v-model="myuser.lname">
-                    </div>
-                    <div class="form-group">
-                        <label>Email Address</label>
-                        <input type="text" class="form-control" v-model="myuser.email">
-                    </div>
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" class="form-control" v-model="myuser.password">
-                    </div>
-                    <div class="form-group">
-                        <label>Role</label>
-                        <select class="form-control" v-model="myuser.role_id">
-                            <option v-for="role in roles" :key="role.id" :value="role.id">{{ role.name }}</option>
+                        <label>Name</label>
+                        <select class="form-control" v-model="myexpense.user_id">
+                            <option v-for="user in users" :key="user.id" :value="user.id">{{ user.fname }} {{ user.lname }}</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select class="form-control" v-model="myexpense.category_id">
+                            <option v-for="cats in category" :key="cats.id" :value="cats.id">{{ cats.name }}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Amount</label>
+                        <input type="text" class="form-control" v-model="myexpense.amount">
+                    </div>
+                    <div class="form-group">
+                        <label>Date Entry</label>
+                        <input type="date" class="form-control" v-model="myexpense.date_entry">
+                    </div>                    
                     <button type="submit" class="btn btn-primary">Create</button>
                 </form>
             </div>
@@ -41,23 +35,29 @@
     export default {
         data() {
             return {
-                myuser: {},
-                roles: {}
+                myexpense: {},
+                users: {},
+                category: {}
             }
         },
         created() {
             this.axios
-                .get('/api/user-management/role/')
+                .get('/api/expense-management/category/')
                 .then(response => {
-                    this.roles = response.data;
+                    this.category = response.data;
+                });
+            this.axios
+                .get('/api/user-management/user/')
+                .then(response => {
+                    this.users = response.data;
                 });
         },
         methods: {
-            addUser() {
+            addExpenses() {
                 this.axios
-                    .post('/api/user-management/user', this.myuser)
+                    .post('/api/expense-management/expenses', this.myexpense)
                     .then(response => (
-                        this.$router.push({ name: 'user' })
+                        this.$router.push({ name: 'expenses' })
                     ))
                     .catch(error => {
                         if (error.response.status == 422){

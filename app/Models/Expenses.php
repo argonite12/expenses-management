@@ -18,4 +18,5 @@ class Expenses extends Model
          'amount',
          'date_entry'
     ];
+
 }
